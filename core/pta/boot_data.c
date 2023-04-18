@@ -58,17 +58,18 @@ static TEE_Result pta_get_kernel_hash(uint32_t param_types,
 	TEE_Result res = TEE_SUCCESS;
 	vaddr_t src_vaddr = 0;
 
-	// Get virtual address from the physical kernel address
-	src_vaddr = (vaddr_t)phys_to_virt(SRC_BASE, MEM_AREA_IO_SEC, 2 + BOOT_DATA_HEADER_SIZE);
-	DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)SRC_BASE, (unsigned long)src_vaddr);
+	// // Get virtual address from the physical kernel address
+	// src_vaddr = (vaddr_t)phys_to_virt(SRC_BASE, MEM_AREA_IO_SEC, 2 + BOOT_DATA_HEADER_SIZE);
+	// DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)SRC_BASE, (unsigned long)src_vaddr);
 
-	if (!src_vaddr) {
-		EMSG("Not enough memory mapped");
-		return TEE_ERROR_OUT_OF_MEMORY;
-	}
+	// if (!src_vaddr) {
+	// 	EMSG("Not enough memory mapped");
+	// 	return TEE_ERROR_OUT_OF_MEMORY;
+	// }
 
 	uint8_t kernel_hash[SHA1_HASH_SIZE+ 1];
-	res = tee_hash_createdigest(TEE_ALG_SHA1, (char*)src_vaddr, BOOT_DATA_HEADER_SIZE, kernel_hash, SHA1_HASH_SIZE);
+	// res = tee_hash_createdigest(TEE_ALG_SHA1, (char*)src_vaddr, BOOT_DATA_HEADER_SIZE, kernel_hash, SHA1_HASH_SIZE);
+	res = tee_hash_createdigest(TEE_ALG_SHA1, (char*)"test", sizeof("test"), kernel_hash, SHA1_HASH_SIZE);
 	if (res != TEE_SUCCESS)
 	{
 		DMSG("tee_hash_createdigest(TEE_ALG_SHA1) Fail\n");
