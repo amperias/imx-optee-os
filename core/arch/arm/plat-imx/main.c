@@ -105,6 +105,12 @@ register_dynamic_shm(DRAM0_NSEC_BASE, DRAM0_NSEC_SIZE);
 register_dynamic_shm(DRAM1_NSEC_BASE, DRAM1_NSEC_SIZE);
 #endif
 
+#ifdef CFG_BOOT_DATA_PTA
+register_phys_mem(MEM_AREA_IO_SEC,
+                  SRC_BASE, SRC_SIZE);
+
+#endif // CFG_BOOT_DATA_PTA
+
 void itr_core_handler(void)
 {
 	gic_it_handle(&gic_data);

@@ -536,5 +536,8 @@ ifeq ($(CFG_BUSFREQ),y)
 $(call force,CFG_SM_PLATFORM_HANDLER,y)
 endif
 
+# Must be activated to use the pta.
+CFG_BOOT_DATA_PTA ?=y
+
 # Cryptographic configuration
 include core/arch/arm/plat-imx/crypto_conf.mk

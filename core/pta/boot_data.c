@@ -58,7 +58,7 @@ static TEE_Result pta_get_kernel_hash(uint32_t param_types,
 	vaddr_t src_vaddr = 0;
 
 	// Get virtual address from the physical kernel address
-	src_vaddr = (vaddr_t)phys_to_virt(CFG_TEE_BOOT_DATA_START, MEM_AREA_IO_SEC, 2 + BOOT_DATA_HEADER_SIZE);
+	src_vaddr = (vaddr_t)phys_to_virt(SRC_BASE, MEM_AREA_IO_SEC, 2 + BOOT_DATA_HEADER_SIZE);
 	DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)CFG_TEE_BOOT_DATA_START, (unsigned long)src_vaddr);
 
 	if (!src_vaddr) {
