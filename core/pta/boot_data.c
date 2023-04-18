@@ -20,6 +20,7 @@
 #define DEBUG 0
 #define SHA1_HASH_SIZE                  20 
 #define SHA256_HASH_SIZE                32
+#define BOOT_DATA_HEADER_SIZE           0x0008
 
 
 static TEE_Result pta_get_device_id(uint32_t param_types,
@@ -59,7 +60,7 @@ static TEE_Result pta_get_kernel_hash(uint32_t param_types,
 
 	// Get virtual address from the physical kernel address
 	src_vaddr = (vaddr_t)phys_to_virt(SRC_BASE, MEM_AREA_IO_SEC, 2 + BOOT_DATA_HEADER_SIZE);
-	DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)CFG_TEE_BOOT_DATA_START, (unsigned long)src_vaddr);
+	DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)SRC_BASE, (unsigned long)src_vaddr);
 
 	if (!src_vaddr) {
 		EMSG("Not enough memory mapped");
