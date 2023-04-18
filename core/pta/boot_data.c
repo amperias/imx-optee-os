@@ -96,6 +96,12 @@ EXIT:
 	return res;
 }
 
+static TEE_Result pta_imx_test_call(uint32_t param_types,
+		TEE_Param params[TEE_NUM_PARAMS])
+{
+	return TEE_SUCCESS;
+}
+
 static TEE_Result invoke_command(void *session_context __unused,
 		uint32_t cmd_id,
 		uint32_t param_types,
@@ -111,6 +117,9 @@ static TEE_Result invoke_command(void *session_context __unused,
 			break;
 		case PTA_BOOT_DATA_KERNEL_HASH:
 			res = pta_get_kernel_hash(param_types, params);
+			break;
+		case PTA_IMX_TEST_CALL:
+			res = pta_imx_test_call(param_types, params);
 			break;
 		default:
 			EMSG("cmd: %d Not supported %s", cmd_id, PTA_BOOT_DATA_NAME);
