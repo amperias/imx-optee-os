@@ -10,17 +10,15 @@
 #include <kernel/tee_common_otp.h>
 #include <trace.h>
 #include <utee_defines.h>
-#include <bootdata/bootdata.h>
+#include <pta_boot_data.h>
 #include <crypto/crypto.h>
 #include <string.h>
 #include <tee/tee_cryp_utl.h>
 
-#include <pta_boot_data.h>
-
 #define DEBUG 0
 #define SHA1_HASH_SIZE                  20 
 #define SHA256_HASH_SIZE                32
-#define BOOT_DATA_HEADER_SIZE           0x0008
+#define BOOT_DATA_HEADER_SIZE            0x0008
 
 
 static TEE_Result pta_get_device_id(uint32_t param_types,
@@ -58,18 +56,17 @@ static TEE_Result pta_get_kernel_hash(uint32_t param_types,
 	TEE_Result res = TEE_SUCCESS;
 	vaddr_t src_vaddr = 0;
 
-	// // Get virtual address from the physical kernel address
-	// src_vaddr = (vaddr_t)phys_to_virt(SRC_BASE, MEM_AREA_IO_SEC, 2 + BOOT_DATA_HEADER_SIZE);
-	// DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)SRC_BASE, (unsigned long)src_vaddr);
+	// Get virtual address from the physical kernel address
+	src_vaddr = (vaddr_t)phys_to_virt(SRC_BASE, MEM_AREA_IO_SEC);
+	DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)SRC_BASE, (unsigned long)src_vaddr);
 
-	// if (!src_vaddr) {
-	// 	EMSG("Not enough memory mapped");
-	// 	return TEE_ERROR_OUT_OF_MEMORY;
-	// }
+	if (!src_vaddr) {
+		EMSG("Not enough memory mapped");
+		return TEE_ERROR_OUT_OF_MEMORY;
+	}
 
 	uint8_t kernel_hash[SHA1_HASH_SIZE+ 1];
-	// res = tee_hash_createdigest(TEE_ALG_SHA1, (char*)src_vaddr, BOOT_DATA_HEADER_SIZE, kernel_hash, SHA1_HASH_SIZE);
-	res = tee_hash_createdigest(TEE_ALG_SHA1, (char*)"test", sizeof("test"), kernel_hash, SHA1_HASH_SIZE);
+	res = tee_hash_createdigest(TEE_ALG_SHA1, (char*)src_vaddr, BOOT_DATA_HEADER_SIZE, kernel_hash, SHA1_HASH_SIZE);
 	if (res != TEE_SUCCESS)
 	{
 		DMSG("tee_hash_createdigest(TEE_ALG_SHA1) Fail\n");
@@ -96,12 +93,6 @@ EXIT:
 	return res;
 }
 
-static TEE_Result pta_imx_test_call(uint32_t param_types,
-		TEE_Param params[TEE_NUM_PARAMS])
-{
-	return TEE_SUCCESS;
-}
-
 static TEE_Result invoke_command(void *session_context __unused,
 		uint32_t cmd_id,
 		uint32_t param_types,
@@ -117,9 +108,6 @@ static TEE_Result invoke_command(void *session_context __unused,
 			break;
 		case PTA_BOOT_DATA_KERNEL_HASH:
 			res = pta_get_kernel_hash(param_types, params);
-			break;
-		case PTA_IMX_TEST_CALL:
-			res = pta_imx_test_call(param_types, params);
 			break;
 		default:
 			EMSG("cmd: %d Not supported %s", cmd_id, PTA_BOOT_DATA_NAME);

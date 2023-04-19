@@ -24,6 +24,6 @@
 
 #define PTA_BOOT_DATA_KERNEL_HASH 2
 
-#define PTA_IMX_TEST_CALL 3
+#define PTA_BOOT_DATA_IMX_TEST_CALL 3
 
 #endif /* __PTA_BOOT_LOG_H */
