@@ -55,10 +55,11 @@ static TEE_Result pta_get_kernel_hash(uint32_t param_types,
 {
 	TEE_Result res = TEE_SUCCESS;
 	vaddr_t src_vaddr = 0;
+	paddr_t address = SRC_BASE;
 
 	// Get virtual address from the physical kernel address
-	src_vaddr = (vaddr_t)phys_to_virt(SRC_BASE, MEM_AREA_IO_SEC);
-	DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)SRC_BASE, (unsigned long)src_vaddr);
+	src_vaddr = (vaddr_t)phys_to_virt(address, MEM_AREA_IO_NSEC);
+	DMSG("Physical = %lX, Virtual = %lX\n", (unsigned long)address, (unsigned long)src_vaddr);
 
 	if (!src_vaddr) {
 		EMSG("Not enough memory mapped");

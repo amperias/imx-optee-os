@@ -106,7 +106,7 @@ register_dynamic_shm(DRAM1_NSEC_BASE, DRAM1_NSEC_SIZE);
 #endif
 
 #ifdef CFG_BOOT_DATA_PTA
-register_phys_mem(MEM_AREA_IO_SEC,
+register_phys_mem(MEM_AREA_IO_NSEC,
                   SRC_BASE, SRC_SIZE);
 
 #endif // CFG_BOOT_DATA_PTA
